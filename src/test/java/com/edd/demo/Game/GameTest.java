@@ -192,7 +192,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     void testThirdDelete() {
         Map<String, Object> map = new HashMap<>();
         map.put("delete_1", "10♣");
@@ -202,7 +202,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(6)
+    @Order(13)
     void testPostOrder() {
         ResponseEntity<?> response = getInstructions.getTransversal("postOrder", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -230,7 +230,7 @@ public class GameTest {
         }
     }
     @Test
-    @Order(11)
+    @Order(14)
     void testFourthDelete() {
         Map<String, Object> map = new HashMap<>();
         map.put("delete_1", "2♣");
@@ -240,7 +240,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(11)
+    @Order(15)
     void testFifthDelete() {
         Map<String, Object> map = new HashMap<>();
         map.put("delete_1", "8♣");
@@ -250,7 +250,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(3)
+    @Order(16)
     void testSecondInsert() {
         Map<String, Object> map = new HashMap<>();
         map.put("insert", "5♠");
@@ -258,7 +258,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(11)
+    @Order(17)
     void testSixthDelete() {
         Map<String, Object> map = new HashMap<>();
         map.put("delete_1", "5♠");
@@ -268,7 +268,7 @@ public class GameTest {
     }
 
     @Test
-    @Order(2)
+    @Order(18)
     void testGetStatusAVL2() {
         Boolean flag = false;
         ResponseEntity<?> response = getInstructions.getStatusAVL(ruta);
@@ -282,7 +282,7 @@ public class GameTest {
         assertTrue(flag);
     }
     @Test
-    @Order(6)
+    @Order(19)
     void testInOrder() {
         ResponseEntity<?> response = getInstructions.getTransversal("inOrder", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
