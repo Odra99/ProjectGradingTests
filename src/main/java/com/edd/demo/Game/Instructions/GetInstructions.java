@@ -43,14 +43,14 @@ public class GetInstructions {
         return result;
     }
 
-    public boolean DownloadImg(ResponseEntity<?> response, String name) {
+    public boolean DownloadImg(ResponseEntity<?> response, String name,String ruta) {
         try {
             String respuesta = response.getBody().toString();
             //String respuesta = "{ \"path\": \"http://localhost:8080/img/img.jpeg\"}";
             JSONObject object = new JSONObject(respuesta);
             String path = object.getString("path");
             //String path = "http://localhost:8080/img/img.jpeg";
-            URLConnection conn = new URL(path).openConnection();
+            URLConnection conn = new URL(ruta + path).openConnection();
             File file = new File(name);
             conn.connect();
             InputStream in = conn.getInputStream();

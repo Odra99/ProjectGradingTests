@@ -10,23 +10,24 @@ import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
 public class DeleteInstructions {
     
 
     @GetMapping("/Game/status-avltree")
-    public ResponseEntity<?> deleteCartas(Map<String, Object> map, String ruta) {
+    public ResponseEntity<?> deleteCartas(Map<String, String> map, String ruta) {
         String url = ruta + "Game/delete";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(map, headers);
         RestTemplate restTemplate = new RestTemplate();
         try {
-            restTemplate.delete(url, entity,String.class);
-            return new ResponseEntity<>(HttpStatus.OK);
+            System.out.println(entity);
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity,String.class,"");
+            return response;
         } catch (Exception e) {
             HttpClientErrorException errorException = (HttpClientErrorException) e;
             return new ResponseEntity<>(errorException.getStatusCode());

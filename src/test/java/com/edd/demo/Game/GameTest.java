@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.edd.demo.Game.Instructions.DeleteInstructions;
@@ -21,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 @TestMethodOrder(OrderAnnotation.class)
 public class GameTest {
 
-    private static final String ruta = "http://30f1-190-148-51-138.ngrok.io/Proyecto2ED/";
+    private static final String ruta = "https://cdaf-45-229-42-86.ngrok.io/";
     Game game = new Game();
     PostInstructions postInstructions = new PostInstructions();
     DeleteInstructions deleteInstructions = new DeleteInstructions();
@@ -30,10 +31,10 @@ public class GameTest {
     @Test
     @Order(1)
     void testStartGame() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>(16,0.75f,true);
         map.put("0", "2♣");
         map.put("1", "K♣");
-        map.put("2", "8♦");
+        map.put("2", "A♦");
         map.put("3", "9♣");
         map.put("4", "10♥");
         map.put("5", "8♣");
@@ -44,9 +45,10 @@ public class GameTest {
         map.put("10", "6♥");
         map.put("11", "3♠");
         map.put("12", "2♥");
-        map.put("13", "10♥");
+        map.put("13", "10♣");
         map.put("14", "7♥");
         map.put("15", "8♥");
+        System.out.println(map);
         assertEquals(HttpStatus.OK, game.startGame(map, ruta).getStatusCode());
     }
 
@@ -57,7 +59,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getStatusAVL(ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             try {
-                flag = getInstructions.DownloadImg(response, "AVL1.jpg");
+                flag = getInstructions.DownloadImg(response, "AVL1.jpg",ruta);
             } catch (Exception e) {
                 flag = false;
             }
@@ -79,7 +81,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getLevel("2", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             String respoString = response.getBody().toString();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
             map.put("0", "8♣");
             map.put("1", "6♥");
             JSONObject respuestaCorrecta = new JSONObject(map);
@@ -95,7 +97,7 @@ public class GameTest {
     @Test
     @Order(5)
     void testInsertNotDuplicated() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
         map.put("insert", "J♣");
         assertEquals(HttpStatus.OK, postInstructions.addCarta(map, ruta).getStatusCode());
     }
@@ -106,7 +108,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getTransversal("preOrder", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             String respoString = response.getBody().toString();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
             map.put("0", "K♣");
             map.put("1", "8♣");
             map.put("2", "2♣");
@@ -137,28 +139,28 @@ public class GameTest {
     @Test
     @Order(7)
     void testDelete() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>(16,0.75f,true);
         map.put("delete_1", "9♣");
         map.put("delete_2", "4♦");
-        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
     @Test
     @Order(8)
     void testDeleteProhibited() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("delete_1", "13♣");
-        assertEquals(HttpStatus.CONFLICT, deleteInstructions.deleteCartas(map, ruta));
+        Map<String, String> map = new HashMap<>();
+        map.put("delete_1", "K♣");
+        assertEquals(HttpStatus.CONFLICT, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
     @Test
     @Order(9)
     void testDeleteNonExist() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("delete_1", "K♦");
-        assertEquals(HttpStatus.NOT_FOUND, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.NOT_FOUND, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
@@ -168,7 +170,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getLevel("5", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             String respoString = response.getBody().toString();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
             map.put("0", "8♥");
             map.put("1", "3♠");
             JSONObject respuestaCorrecta = new JSONObject(map);
@@ -184,17 +186,17 @@ public class GameTest {
     @Test
     @Order(11)
     void testSecondDelete() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("delete_1", "J♣");
         map.put("delete_2", "2♥");
-        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
     @Test
     @Order(12)
     void testThirdDelete() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("delete_1", "10♣");
         map.put("delete_2", "3♠");
         assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
@@ -207,7 +209,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getTransversal("postOrder", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             String respoString = response.getBody().toString();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
             map.put("0", "2♣");
             map.put("1", "8♣");
             map.put("2", "7♣");
@@ -232,9 +234,9 @@ public class GameTest {
     @Test
     @Order(14)
     void testFourthDelete() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("delete_1", "2♣");
-        map.put("delete_2", "J♠");
+        Map<String, String> map = new HashMap<>();
+        map.put("delete_1", "2♥");
+        map.put("delete_2", "J♣");
         assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
 
     }
@@ -242,7 +244,7 @@ public class GameTest {
     @Test
     @Order(15)
     void testFifthDelete() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("delete_1", "8♣");
         map.put("delete_2", "7♥");
         assertEquals(HttpStatus.NOT_ACCEPTABLE, deleteInstructions.deleteCartas(map, ruta));
@@ -254,16 +256,16 @@ public class GameTest {
     void testSecondInsert() {
         Map<String, Object> map = new HashMap<>();
         map.put("insert", "5♠");
-        assertEquals(HttpStatus.NOT_ACCEPTABLE, postInstructions.addCarta(map, ruta).getStatusCode());
+        assertEquals(HttpStatus.OK, postInstructions.addCarta(map, ruta).getStatusCode());
     }
 
     @Test
     @Order(17)
     void testSixthDelete() {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("delete_1", "5♠");
         map.put("delete_2", "8♣");
-        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.ACCEPTED, deleteInstructions.deleteCartas(map, ruta));
 
     }
 
@@ -274,7 +276,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getStatusAVL(ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             try {
-                flag = getInstructions.DownloadImg(response, "AVL2.jpg");
+                flag = getInstructions.DownloadImg(response, "AVL2.jpg",ruta);
             } catch (Exception e) {
                 flag = false;
             }
@@ -287,7 +289,7 @@ public class GameTest {
         ResponseEntity<?> response = getInstructions.getTransversal("inOrder", ruta);
         if (response.getStatusCode() == HttpStatus.OK) {
             String respoString = response.getBody().toString();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>(16,0.75f,true);
             map.put("0", "7♣");
             map.put("1", "K♣");
             map.put("2", "A♦");

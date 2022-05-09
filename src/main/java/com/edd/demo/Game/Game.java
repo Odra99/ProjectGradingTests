@@ -17,12 +17,13 @@ public class Game {
 
 
     @GetMapping("/Game/start")
-    public ResponseEntity<?> startGame(Map<String, Object> map, String ruta ) {
+    public ResponseEntity<?> startGame(Map<String, String> map, String ruta ) {
         String url = ruta + "Game/start";
+        //String url = "/Game/start";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(map, headers);
         RestTemplate restTemplate = new RestTemplate();
         try {
             ResponseEntity<String> result = restTemplate.postForEntity(url, entity, String.class);
