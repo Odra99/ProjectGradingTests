@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 @TestMethodOrder(OrderAnnotation.class)
 public class GameTest {
 
-    private static final String ruta = "https://cdaf-45-229-42-86.ngrok.io/";
+    private static final String ruta = "https://4c02-200-119-182-147.ngrok.io/";
     Game game = new Game();
     PostInstructions postInstructions = new PostInstructions();
     DeleteInstructions deleteInstructions = new DeleteInstructions();
@@ -199,7 +199,7 @@ public class GameTest {
         Map<String, String> map = new HashMap<>();
         map.put("delete_1", "10♣");
         map.put("delete_2", "3♠");
-        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
@@ -235,9 +235,9 @@ public class GameTest {
     @Order(14)
     void testFourthDelete() {
         Map<String, String> map = new HashMap<>();
-        map.put("delete_1", "2♥");
-        map.put("delete_2", "J♣");
-        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta));
+        map.put("delete_1", "2♣");
+        map.put("delete_2", "J♠");
+        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
@@ -247,7 +247,7 @@ public class GameTest {
         Map<String, String> map = new HashMap<>();
         map.put("delete_1", "8♣");
         map.put("delete_2", "7♥");
-        assertEquals(HttpStatus.NOT_ACCEPTABLE, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
@@ -265,7 +265,7 @@ public class GameTest {
         Map<String, String> map = new HashMap<>();
         map.put("delete_1", "5♠");
         map.put("delete_2", "8♣");
-        assertEquals(HttpStatus.ACCEPTED, deleteInstructions.deleteCartas(map, ruta));
+        assertEquals(HttpStatus.OK, deleteInstructions.deleteCartas(map, ruta).getStatusCode());
 
     }
 
